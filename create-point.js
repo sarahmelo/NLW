@@ -7,8 +7,8 @@ function populateUFs() {
     .then( states => { 
 
         for( const state of states) {
-            ufSelect.innerHTML += `<option value="${state.id}">${state.nome}</option>`
-        }
+            ufSelect.innerHTML += `<option value="${state.id}">${state.nome}</option>` 
+        }                     // * + * é o mesmo que ufSelect.innerHTML = ufSelect.innerHTML, ou seja, ele menciona ele mesmo.
 
         
     } )
@@ -28,17 +28,54 @@ function getCities(event) {
 
     const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufvalue}/municipios`
 
+    citySelect.innerHTML = "<option>Selecione a Cidade</option>"   // [CORREÇÃO DE BUG]limpa o conteúdo para que não permita o armazenamento de cidades de outro estado que já havia sido selecionado.
+    citySelect.disabled = true //
+
     fetch(url)
-    .then( res => res.json() )
+    .then( res => res.json() ) 
     .then( cities => {
+        
+        
+     
         for( const city of cities ) {
             citySelect.innerHTML += `<option value="${city.id}">${city.nome}</option>`
         }         
      
-        citySelect.disabled = false
+        citySelect.disabled = false //quando estado é selecionado, o fieldset *Cidade* é habilitado. 
     } )
 }
 
 document
     .querySelector("select[name=uf]")
     .addEventListener("change", getCities)
+
+//Itens de coleta
+//pegar todos os li's
+const itemsToCollect = document.querySelectorAll(".items-grid li")
+
+for (const item of itemsToCollect) {
+    item.addEventListener("click", handleSelectedItem)
+}
+
+function handleSelectedItem(event) {
+    const itemLi = event.target
+    
+    //adicionar ou remover uma classe com javascript
+    itemLi.classList.toggle("selected") //toggle (adicionar ou remover)
+
+    console.log(event.target.dataset.id)
+}
+
+
+
+
+
+
+
+
+
+    //                                   Anotações Adicionais
+    //  .then = executa alguma função com os dados que *fetch* buscou e retornou. 
+    //  json = traduz a estrutura de dados de objetos, matrizes, números, strings, booleanos, e null
+    //  .queryselector = seleciona e consulta 
+
