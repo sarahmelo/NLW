@@ -57,13 +57,46 @@ for (const item of itemsToCollect) {
     item.addEventListener("click", handleSelectedItem)
 }
 
+const collectedItems = document.querySelector("input[name=items]")
+
+
+let selectedItems = []
+
 function handleSelectedItem(event) {
     const itemLi = event.target
     
     //adicionar ou remover uma classe com javascript
     itemLi.classList.toggle("selected") //toggle (adicionar ou remover)
 
-    console.log(event.target.dataset.id)
+    const itemId = itemLi.dataset.id
+    
+    //verificar se existem items selecionas
+    //pegar os items selecionados
+    const alreadySelected = selectedItems.findIndex( item => {
+        const itemFound = item == itemId //true or-->// = atribuir valor / == comparar valor
+        return itemFound
+    })
+
+    //se já estiver selecionado, 
+    if( alreadySelected >= 0 ) {
+        //tirar da seleção
+        const filteredItems = selectedItems.filter( item => {
+            const itemIsDifferent = item != itemId //false
+            return itemIsDifferent
+        })
+
+        selectedItems = filteredItems
+    } else {
+        // se não estiver selecionado 
+        // adicionar a seleção
+        selectedItems.push(itemId)
+    }
+     
+ 
+    //atualizar o campo escondido com os dados/items selecionados
+    collectedItems.value = selectedItems
+
+
 }
 
 
@@ -78,4 +111,4 @@ function handleSelectedItem(event) {
     //  .then = executa alguma função com os dados que *fetch* buscou e retornou. 
     //  json = traduz a estrutura de dados de objetos, matrizes, números, strings, booleanos, e null
     //  .queryselector = seleciona e consulta 
-
+    // != mesma coisa de >= or <=
